@@ -5,13 +5,15 @@ import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
 import Navbar from "./components/navBar";
 import RightBar from "./components/rightBar";
+import Single from "./pages/Single";
+import Publish from "./pages/Publish";
 
 function App() {
   const Layout = () => {
     return (
       <div>
         <Navbar />
-        <div className="flex">
+        <div className="flex bg-slate-300">
           <Outlet />
           <RightBar />
         </div>
@@ -31,6 +33,14 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
+        },
+        {
+          path: "/post/:id",
+          element: <Single />,
+        },
+        {
+          path: "/publish",
+          element: <Publish />,
         },
       ],
     },
