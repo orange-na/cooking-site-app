@@ -1,6 +1,24 @@
-import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/authContext";
 
 function Login() {
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleChanged = (e) => {
+    setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(inputs);
+  };
+
+  const handleLogin = () => {
+    login(inputs);
+    navigate("/");
+  };
   return (
     <>
       <div className="w-screen h-screen bg-slate-200 flex justify-center items-center">
@@ -8,18 +26,23 @@ function Login() {
           <h2 className="mb-5 text-[25px]">Log in</h2>
           <div className="flex justify-between flex-col gap-5 w-full">
             <input
-              name="username"
+              name="email"
               className="py-4 px-4 border-b border-gray-300 rounded-md"
-              type="text"
-              placeholder="Username"
+              type="email"
+              onChange={handleChanged}
+              placeholder="Email"
             />
             <input
               name="password"
               className="py-4 px-4 border-b border-gray-300 rounded-md"
               type="Password"
+              onChange={handleChanged}
               placeholder="password"
             />
-            <button className="bg-green-500 py-2 px-4 rounded-md text-white mt-5 hover:bg-green-600 duration-200">
+            <button
+              className="bg-green-500 py-2 px-4 rounded-md text-white mt-5 hover:bg-green-600 duration-200"
+              onClick={handleLogin}
+            >
               Log in
             </button>
             <p>

@@ -15,7 +15,7 @@ function Profile() {
               className="w-full object-center object-cover h-[150px] rounded-lg"
             />
             <img
-              src={state.profileImg}
+              src={state.profileicon}
               alt=""
               className="absolute rounded-[20px] w-[200px] h-[200px] top-[50px] left-[30px] border-[3px] border-white"
             />

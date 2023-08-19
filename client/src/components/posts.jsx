@@ -1,28 +1,29 @@
 import { Link } from "react-router-dom";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import { useEffect, useState } from "react";
+import axios from "axios";
 // import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 
 function Posts() {
-  const posts = [
-    {
-      id: 1,
-      username: "Takeshi",
-      profileImg: "/img/profileImg.jpg",
-      date: "an hour ago",
-      cost: "2.56",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur odio rem officiis et nemo autem delectus quam doloremque commodi saepe!",
-      postImg: "/img/foodImg.jpg",
-    },
-    {
-      id: 2,
-      username: "Takeshi",
-      profileImg: "/img/profileImg.jpg",
-      date: "an hour ago",
-      cost: "2.56",
-      desc: "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur odio rem officiis et nemo autem delectus quam doloremque commodi saepe!",
-      postImg: "/img/foodImg.jpg",
-    },
-  ];
+  const [posts, setPosts] = useState([]);
+
+  const getPosts = async () => {
+    try {
+      const res = await axios.get("http://localhost:8800/api/posts/get", {
+        withCredentials: true,
+      });
+      setPosts(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  console.log(posts);
+
+  useEffect(() => {
+    getPosts();
+  }, []);
+
   return (
     <div>
       {posts.map((post) => {
@@ -34,7 +35,7 @@ function Posts() {
             <div className="flex justify-between items-center">
               <div className="flex items-center text-[13px]">
                 <img
-                  src={post.profileImg}
+                  src={post.profileicon}
                   alt=""
                   className="w-[55px] h-[55px] rounded-full object-cover mr-3"
                 />
@@ -51,7 +52,7 @@ function Posts() {
               <p>{post.desc}</p>
             </Link>
             <img
-              src={post.postImg}
+              src={post.img}
               alt=""
               className="object-cover w-full max-h-[450px] rounded-md"
             />

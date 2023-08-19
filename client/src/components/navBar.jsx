@@ -1,7 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { useContext } from "react";
+import { AuthContext } from "../contexts/authContext";
 
 function Navbar() {
+  const { logout, currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
   return (
     <header>
       <div className="flex items-center justify-between h-[85px] px-[40px]">
@@ -14,12 +23,12 @@ function Navbar() {
               sx={{ fontSize: 35 }}
               className="text-gray-600 mr-2"
             />
-            <span>Domo Name</span>
+            <span>{currentUser.nickname}</span>
           </Link>
           <Link to="/login">
             <span>Login</span>
           </Link>
-          <span>Logout</span>
+          <button onClick={handleLogout}>Logout</button>
           <Link to="/signup">
             <span>Sign up</span>
           </Link>
