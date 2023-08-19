@@ -2,6 +2,7 @@ const express = require("express");
 const pool = require("./db");
 const authRouter = require("./routes/auth");
 const postRouter = require("./routes/posts");
+const simulateRouter = require("./routes/simulate");
 const cors = require("cors");
 const cookieparser = require("cookie-parser");
 const corsOption = {
@@ -21,6 +22,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter);
+app.use("/api/simulate", simulateRouter);
 
 app.get("/api", (req, res) => {
   q = "SELECT * FROM users";
