@@ -7,6 +7,7 @@ import Navbar from "./components/navBar";
 import RightBar from "./components/rightBar";
 import Single from "./pages/Single";
 import Publish from "./pages/Publish";
+import Simulate from "./pages/Simulate";
 
 function App() {
   const Layout = () => {
@@ -35,12 +36,16 @@ function App() {
           element: <Profile />,
         },
         {
-          path: "/post/:id",
+          path: "/single/:id",
           element: <Single />,
         },
         {
           path: "/publish",
           element: <Publish />,
+        },
+        {
+          path: "/simulate",
+          element: <Simulate />,
         },
       ],
     },

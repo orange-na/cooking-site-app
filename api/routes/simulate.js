@@ -3,6 +3,6 @@ const { getOrder } = require("../controllers/simulate");
 
 const router = express.Router();
 
-router.get("/getorder", getOrder);
+router.post("/getorder", getOrder);
 
 module.exports = router;

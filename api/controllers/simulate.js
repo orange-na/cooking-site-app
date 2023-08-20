@@ -15,7 +15,7 @@ const getOrder = (req, res) => {
   const values = [req.body.limit, req.body.term];
 
   // クエリを実行して結果を取得
-  pool.query(q, [1000, 3], (err, result) => {
+  pool.query(q, values, (err, result) => {
     if (err) {
       console.error(err);
       res.status(500).json({ error: "An error occurred" });
@@ -25,13 +25,16 @@ const getOrder = (req, res) => {
       const selectedValues = result.rows.map((row) => row.cost);
       const total = selectedValues.reduce((sum, cost) => sum + cost, 0);
 
-      // 合計が1000以下の場合、値と合計を返す
-      if (total <= 1000) {
-        res.json({ selectedValues, total, data });
-      } else {
-        // 合計が1000を超える場合は再度クエリを実行
-        res.redirect("http://localhost:8800/api/simulate/getorder");
-      }
+      res.json({ selectedValues, total, data });
+
+      // // 合計が1000以下の場合、値と合計を返す
+      // if (total <= req.body.limit) {
+      //   res.json({ selectedValues, total, data });
+      // }
+      // else {
+      //   // 合計が1000を超える場合は再度クエリを実行
+      //   res.redirect("http://localhost:8800/api/simulate/getorder");
+      // }
     }
   });
 };
