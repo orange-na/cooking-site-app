@@ -1,4 +1,9 @@
-import { Outlet, RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  Navigate,
+  Outlet,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -8,13 +13,23 @@ import RightBar from "./components/rightBar";
 import Single from "./pages/Single";
 import Publish from "./pages/Publish";
 import Simulate from "./pages/Simulate";
+import { useContext } from "react";
+import { AuthContext } from "./contexts/authContext";
+import Results from "./pages/results";
 
 function App() {
+  const { currentUser } = useContext(AuthContext);
+
+  const ProtectedRouter = ({ children }) => {
+    if (!currentUser) return <Navigate to="/login" />;
+    return children;
+  };
+
   const Layout = () => {
     return (
       <div>
         <Navbar />
-        <div className="flex bg-slate-300">
+        <div className="flex">
           <Outlet />
           <RightBar />
         </div>
@@ -25,7 +40,11 @@ function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Layout />,
+      element: (
+        <ProtectedRouter>
+          <Layout />
+        </ProtectedRouter>
+      ),
       children: [
         {
           path: "/",
@@ -46,6 +65,10 @@ function App() {
         {
           path: "/simulate",
           element: <Simulate />,
+        },
+        {
+          path: "/results",
+          element: <Results />,
         },
       ],
     },

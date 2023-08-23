@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 function Publish() {
   const navigate = useNavigate();
+  const [file, setFile] = useState(null);
   const [desc, setDesc] = useState("");
   const [cat, setCat] = useState("");
   const [inputs, setInputs] = useState({
@@ -17,11 +18,29 @@ function Publish() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
+  const upload = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await axios.post(
+        "http://localhost:8800/api/upload",
+        formData,
+        { withCredentials: true }
+      );
+      console.log(res.data);
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const handlePost = async () => {
+    const imgUrl = await upload();
+    console.log(imgUrl);
     try {
       const res = await axios.post(
         "http://localhost:8800/api/posts/add",
-        { ...inputs, cat: cat, desc: desc, img: "/img/foodImg.jpg" },
+        { ...inputs, cat: cat, desc: desc, img: imgUrl },
         { withCredentials: true }
       );
       console.log(res.data);
@@ -34,8 +53,8 @@ function Publish() {
   console.log(inputs);
   console.log(desc);
   console.log(cat);
+  console.log(file);
 
-  const file = false;
   return (
     <>
       <div className="h-[calc(100vh-105px)] basis-2/3 bg-white mx-[20px] mt-[20px] rounded-md p-[20px] overflow-scroll">
@@ -78,7 +97,12 @@ function Publish() {
             <div className="flex items-center mt-[20px]">
               <h1 className="text-[20px] font-[700] mr-[10px]">Upload: </h1>
 
-              <input className="hidden" type="file" id="file" />
+              <input
+                className="hidden"
+                type="file"
+                id="file"
+                onChange={(e) => setFile(e.target.files[0])}
+              />
               {file ? (
                 <label
                   htmlFor="file"

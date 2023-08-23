@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { AuthContext } from "../contexts/authContext";
 
 function Posts() {
@@ -62,53 +62,123 @@ function Posts() {
   }, []);
 
   return (
-    <div>
+    // <div className="">
+    //   {posts.map((post) => {
+    //     return (
+    //       <div
+    //         key={post.post_id}
+    //         className="border-b border-gray-300 pb-[30px] flex flex-col gap-4 mb-5"
+    //       >
+    //         <div className="flex justify-between items-center">
+    //           <div className="flex items-center text-[13px]">
+    //             <img
+    //               src={post.profileicon}
+    //               alt=""
+    //               className="w-[50px] h-[50px] rounded-full object-cover mr-3"
+    //             />
+    //             <div className="flex flex-col">
+    //               <Link to="/profile/:id" state={post}>
+    //                 <p className="text-[18px] font-semibold">{post.username}</p>
+    //               </Link>
+    //               <p>{post.date} an hour ago</p>
+    //             </div>
+    //           </div>
+    //           <div className="flex items-center gap-[20px]">
+    //             <p className="text-[20px]">{post.category}</p>
+    //             <p className="text-[30px]">${post.cost}</p>
+    //           </div>
+    //         </div>
+    //         <Link to="/single/:id" state={{ post, likes }}>
+    //           <p className="text-[25px]">{post.post_title}</p>
+    //         </Link>
+    //         <img
+    //           src={post.img}
+    //           alt=""
+    //           className="object-cover w-full max-h-[450px] rounded-md"
+    //         />
+    //         <div className="ml-[10px]">
+    // <div
+    //   className="flex items-center"
+    //   onClick={() => handleLike(post.post_id)}
+    // >
+    //   {likes.some(
+    //     (like) =>
+    //       like.postid === post.post_id &&
+    //       like.likeuserid === currentUser.id
+    //   ) ? (
+    //     <FavoriteOutlinedIcon />
+    //   ) : (
+    //     <FavoriteBorderOutlinedIcon />
+    //   )}
+    //   <span className="ml-1">{post.like_count} likes</span>
+    // </div>
+    //         </div>
+    //       </div>
+    //     );
+    //   })}
+    // </div>
+
+    <div className="grid grid-cols-3 gap-x-[15px] gap-y-[30px]">
       {posts.map((post) => {
         return (
           <div
             key={post.post_id}
-            className="border-b border-gray-300 pb-[30px] flex flex-col gap-4 mb-5"
+            className="rounded-lg flex flex-col shadow-lg border-[1px] border-gray-300 pb-[15px]"
           >
-            <div className="flex justify-between items-center">
-              <div className="flex items-center text-[13px]">
+            <div className="relative">
+              <Link to="/single/:id" state={{ post, likes }}>
                 <img
-                  src={post.profileicon}
+                  src={`/upload/${post.img}`}
                   alt=""
-                  className="w-[55px] h-[55px] rounded-full object-cover mr-3"
+                  className="rounded-t-lg hover:opacity-[85%] duration-200"
                 />
-                <div>
-                  <Link to="/profile/:id" state={post}>
-                    <p className="text-[15px] font-semibold">{post.username}</p>
-                  </Link>
-                  <p>{post.date}</p>
+              </Link>
+              <div className="">
+                <p className="absolute top-0 bg-white rounded-br-lg rounded-tl-lg px-[5px]">
+                  ${post.cost}
+                </p>
+                <div className="absolute bottom-[5px] right-[5px] flex items-center gap-[5px]">
+                  <div
+                    className="flex items-center bg-white px-[10px] py-[1px] rounded-full cursor-pointer"
+                    onClick={() => handleLike(post.post_id)}
+                  >
+                    {likes.some(
+                      (like) =>
+                        like.postid === post.post_id &&
+                        like.likeuserid === currentUser.id
+                    ) ? (
+                      <FavoriteOutlinedIcon
+                        sx={{ fontSize: 17, color: "red" }}
+                        className=""
+                      />
+                    ) : (
+                      <FavoriteBorderOutlinedIcon sx={{ fontSize: 17 }} />
+                    )}
+                    <span className="ml-1 text-[15px]">{post.like_count}</span>
+                  </div>
+                  <p className="bg-white px-[10px] py-[1px] rounded-full text-[15px]">
+                    {post.category}
+                  </p>
                 </div>
               </div>
-              <p className="text-[30px]">${post.cost}</p>
             </div>
-            <Link to="/single/:id" state={post}>
-              <p>{post.desc}</p>
-            </Link>
-            <img
-              src={post.img}
-              alt=""
-              className="object-cover w-full max-h-[450px] rounded-md"
-            />
-            <div className="ml-[10px]">
-              <div
-                className="flex items-center"
-                onClick={() => handleLike(post.post_id)}
-              >
-                {likes.some(
-                  (like) =>
-                    like.postid === post.post_id &&
-                    like.likeuserid === currentUser.id
-                ) ? (
-                  <FavoriteOutlinedIcon />
-                ) : (
-                  <FavoriteBorderOutlinedIcon />
-                )}
-                <span className="ml-1">{post.like_count} likes</span>
-              </div>
+
+            <div className="px-[20px] py-[5px]">
+              <Link to="/single/:id" state={{ post, likes }}>
+                <h2 className="font-[500] text-[20px] hover:opacity-[80%] duration-200">
+                  {post.post_title}
+                </h2>
+              </Link>
+              <Link to="/profile/:id" state={post}>
+                <div className="flex items-center gap-[5px] mt-[5px]">
+                  <img
+                    src={post.profileicon}
+                    alt=""
+                    className="w-[30px] h-[30px] rounded-full"
+                  />
+                  <p>{post.nickname}</p>
+                </div>
+              </Link>
             </div>
           </div>
         );
