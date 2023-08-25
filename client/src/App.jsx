@@ -16,6 +16,7 @@ import Simulate from "./pages/Simulate";
 import { useContext } from "react";
 import { AuthContext } from "./contexts/authContext";
 import Results from "./pages/results";
+import Liked from "./pages/Liked";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -69,6 +70,10 @@ function App() {
         {
           path: "/results",
           element: <Results />,
+        },
+        {
+          path: "/liked",
+          element: <Liked />,
         },
       ],
     },

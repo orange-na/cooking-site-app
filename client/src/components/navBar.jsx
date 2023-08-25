@@ -2,7 +2,6 @@ import { Link, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/authContext";
-import SearchIcon from "@mui/icons-material/Search";
 import { PostsContext } from "../contexts/postsContext";
 
 function Navbar() {
@@ -23,20 +22,8 @@ function Navbar() {
           <h1 className="font-[800] text-[20px]">OnBudget</h1>
         </Link>
         <div className="flex items-center gap-[25px]">
-          {/* <label
-            className="border-[1px] border-gray-300 px-[10px] rounded-lg  w-[350px]"
-            htmlFor="search"
-          >
-            <SearchIcon sx={{ fontSize: 25, color: "gray" }} />
-            <input
-              type="search"
-              className="py-[10px] px-[5px] w-[90%]"
-              placeholder="Search"
-              id="search"
-            />
-          </label> */}
           <Link
-            to="/profile/:id"
+            to={`/profile/${currentUser.id}`}
             className="flex items-center"
             state={currentUser}
           >
@@ -52,7 +39,6 @@ function Navbar() {
                 className="text-gray-600 mr-2"
               />
             )}
-            {/* <span>{currentUser.nickname}</span> */}
           </Link>
           {currentUser ? null : (
             <Link to="/login">

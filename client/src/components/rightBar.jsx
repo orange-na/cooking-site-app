@@ -6,18 +6,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
+import { AuthContext } from "../contexts/authContext";
 
 function RightBar() {
-  // const [results, setResults] = useState(
-  //   JSON.parse(localStorage.getItem("results"))
-  // );
-
-  // useEffect(() => {
-  //   localStorage.setItem("results", JSON.stringify(results));
-  // }, [results]);
   const pathname = useLocation().pathname;
-
   const { results } = useContext(ResultsContext);
+  const { currentUser } = useContext(AuthContext);
 
   return (
     <aside className="h-[calc(100vh-125px)] basis-1/4 bg-white mr-[20px] mt-[20px] rounded-md p-[20px] shadow-lg">
@@ -35,10 +29,14 @@ function RightBar() {
               <span>Home</span>
             </li>
           </Link>
-          <Link to="/profile/:id" className="w-full h-full block items-center">
+          <Link
+            to={`/profile/${currentUser.id}`}
+            className="w-full h-full block items-center"
+            state={currentUser}
+          >
             <li
               className={
-                pathname === "/profile/:id"
+                pathname === `/profile/${currentUser.id}`
                   ? "px-[20px] py-[15px] bg-slate-700 w-full h-full rounded-2xl text-white flex items-center gap-[10px] hover:opacity-[90%] duration-200"
                   : "px-[20px] py-[15px] bg-white w-full h-full rounded-2xl text-slate-900 flex items-center gap-[10px] hover:bg-slate-100 duration-200"
               }
@@ -47,10 +45,10 @@ function RightBar() {
               <span>User</span>
             </li>
           </Link>
-          <Link to="/" className="w-full h-full block items-center">
+          <Link to="/liked" className="w-full h-full block items-center">
             <li
               className={
-                pathname === "/liked/:id"
+                pathname === "/liked"
                   ? "px-[20px] py-[15px] bg-slate-700 w-full h-full rounded-2xl text-white flex items-center gap-[10px] hover:opacity-[90%] duration-200"
                   : "px-[20px] py-[15px] bg-white w-full h-full rounded-2xl text-slate-900 flex items-center gap-[10px] hover:bg-slate-100 duration-200"
               }
