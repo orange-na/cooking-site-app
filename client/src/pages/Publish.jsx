@@ -36,7 +36,6 @@ function Publish() {
 
   const handlePost = async () => {
     const imgUrl = await upload();
-    console.log(imgUrl);
     try {
       const res = await axios.post(
         "http://localhost:8800/api/posts/add",
@@ -50,14 +49,9 @@ function Publish() {
     }
   };
 
-  console.log(inputs);
-  console.log(desc);
-  console.log(cat);
-  console.log(file);
-
   return (
     <>
-      <div className="h-[calc(100vh-105px)] basis-2/3 bg-white mx-[20px] mt-[20px] rounded-md p-[20px] overflow-scroll">
+      <div className="h-[calc(100vh-105px)] basis-3/4 bg-white mx-[20px] mt-[20px] rounded-md p-[20px] overflow-scroll">
         <div className="flex">
           <img
             src="/img/profileImg.jpg"

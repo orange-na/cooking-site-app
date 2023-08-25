@@ -28,7 +28,6 @@ function Signup() {
       console.log(error);
     }
   };
-  console.log(inputs);
   return (
     <>
       <div className="w-screen h-screen bg-slate-200 flex justify-center items-center">

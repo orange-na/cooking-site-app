@@ -4,13 +4,12 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { AuthContext } from "../contexts/authContext";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Posts() {
   const [posts, setPosts] = useState([]);
   const [likes, setLikes] = useState([]);
   const { currentUser } = useContext(AuthContext);
-
-  console.log(currentUser);
 
   const getPosts = async () => {
     try {
@@ -35,8 +34,6 @@ function Posts() {
     }
   };
 
-  console.log(likes);
-
   const handleLike = async (postId) => {
     try {
       const res = await axios.post(
@@ -54,7 +51,23 @@ function Posts() {
     }
   };
 
-  console.log(posts);
+  const [search, setSearch] = useState("");
+
+  const handleSearch = (e) => {
+    setSearch(e.target.value);
+    console.log(search);
+  };
+
+  const filteredPosts = posts.filter(
+    (post) =>
+      post.post_title.toLowerCase().includes(search.toLowerCase()) ||
+      post.category.toLowerCase().includes(search.toLowerCase()) ||
+      post.cost <= parseFloat(search)
+  );
+
+  const handleCategory = (e) => {
+    setSearch(e.target.textContent);
+  };
 
   useEffect(() => {
     getPosts();
@@ -62,127 +75,199 @@ function Posts() {
   }, []);
 
   return (
-    // <div className="">
-    //   {posts.map((post) => {
-    //     return (
-    //       <div
-    //         key={post.post_id}
-    //         className="border-b border-gray-300 pb-[30px] flex flex-col gap-4 mb-5"
-    //       >
-    //         <div className="flex justify-between items-center">
-    //           <div className="flex items-center text-[13px]">
-    //             <img
-    //               src={post.profileicon}
-    //               alt=""
-    //               className="w-[50px] h-[50px] rounded-full object-cover mr-3"
-    //             />
-    //             <div className="flex flex-col">
-    //               <Link to="/profile/:id" state={post}>
-    //                 <p className="text-[18px] font-semibold">{post.username}</p>
-    //               </Link>
-    //               <p>{post.date} an hour ago</p>
-    //             </div>
-    //           </div>
-    //           <div className="flex items-center gap-[20px]">
-    //             <p className="text-[20px]">{post.category}</p>
-    //             <p className="text-[30px]">${post.cost}</p>
-    //           </div>
-    //         </div>
-    //         <Link to="/single/:id" state={{ post, likes }}>
-    //           <p className="text-[25px]">{post.post_title}</p>
-    //         </Link>
-    //         <img
-    //           src={post.img}
-    //           alt=""
-    //           className="object-cover w-full max-h-[450px] rounded-md"
-    //         />
-    //         <div className="ml-[10px]">
-    // <div
-    //   className="flex items-center"
-    //   onClick={() => handleLike(post.post_id)}
-    // >
-    //   {likes.some(
-    //     (like) =>
-    //       like.postid === post.post_id &&
-    //       like.likeuserid === currentUser.id
-    //   ) ? (
-    //     <FavoriteOutlinedIcon />
-    //   ) : (
-    //     <FavoriteBorderOutlinedIcon />
-    //   )}
-    //   <span className="ml-1">{post.like_count} likes</span>
-    // </div>
-    //         </div>
-    //       </div>
-    //     );
-    //   })}
-    // </div>
-
-    <div className="grid grid-cols-3 gap-x-[15px] gap-y-[30px]">
-      {posts.map((post) => {
-        return (
-          <div
-            key={post.post_id}
-            className="rounded-lg flex flex-col shadow-lg border-[1px] border-gray-300 pb-[15px]"
+    <div>
+      <div className="mb-[15px]">
+        <label
+          className="border-[1px] border-gray-300 rounded-lg block w-full px-[10px]"
+          htmlFor="search"
+        >
+          <span className="w-[5%]">
+            <SearchIcon sx={{ fontSize: 25, color: "gray" }} />
+          </span>
+          <input
+            type="search"
+            className="flex-grow py-[11px] px-[10px] w-[95%]"
+            placeholder="Search Meals & Costs"
+            id="search"
+            value={search}
+            onChange={handleSearch}
+          />
+        </label>
+        <div className="flex gap-[5px] mt-[10px]">
+          <button
+            onClick={handleCategory}
+            className="text-gray-700 py-[5px] px-[15px] border-[1px] border-gray-300 rounded-full hover:bg-gray-100 duration-100"
           >
-            <div className="relative">
-              <Link to="/single/:id" state={{ post, likes }}>
-                <img
-                  src={`/upload/${post.img}`}
-                  alt=""
-                  className="rounded-t-lg hover:opacity-[85%] duration-200"
-                />
-              </Link>
-              <div className="">
-                <p className="absolute top-0 bg-white rounded-br-lg rounded-tl-lg px-[5px]">
-                  ${post.cost}
-                </p>
-                <div className="absolute bottom-[5px] right-[5px] flex items-center gap-[5px]">
-                  <div
-                    className="flex items-center bg-white px-[10px] py-[1px] rounded-full cursor-pointer"
-                    onClick={() => handleLike(post.post_id)}
+            Breakfast
+          </button>
+          <button
+            onClick={handleCategory}
+            className="text-gray-700 py-[5px] px-[15px] border-[1px] border-gray-300 rounded-full hover:bg-gray-100 duration-100"
+          >
+            Lunch
+          </button>
+          <button
+            onClick={handleCategory}
+            className="text-gray-700 py-[5px] px-[15px] border-[1px] border-gray-300 rounded-full hover:bg-gray-100 duration-100"
+          >
+            Dinner
+          </button>
+        </div>
+      </div>
+
+      {search ? (
+        <div className="grid grid-cols-3 gap-x-[15px] gap-y-[30px]">
+          {filteredPosts?.map((filteredPost) => {
+            return (
+              <div
+                key={filteredPost.post_id}
+                className="rounded-lg flex flex-col shadow-lg border-[1px] border-gray-300 pb-[5px]"
+              >
+                <div className="relative">
+                  <Link
+                    to="/single/:id"
+                    state={{ filteredPost, likes }}
+                    className="flex justify-center"
                   >
-                    {likes.some(
-                      (like) =>
-                        like.postid === post.post_id &&
-                        like.likeuserid === currentUser.id
-                    ) ? (
-                      <FavoriteOutlinedIcon
-                        sx={{ fontSize: 17, color: "red" }}
-                        className=""
-                      />
-                    ) : (
-                      <FavoriteBorderOutlinedIcon sx={{ fontSize: 17 }} />
-                    )}
-                    <span className="ml-1 text-[15px]">{post.like_count}</span>
+                    <img
+                      src={`/upload/${filteredPost.img}`}
+                      alt=""
+                      className="rounded-t-lg hover:opacity-[85%] duration-200 h-[300px] object-center object-cover w-full"
+                    />
+                  </Link>
+                  <div className="">
+                    <p className="absolute top-0 bg-white rounded-br-lg rounded-tl-lg px-[5px]">
+                      ${filteredPost.cost}
+                    </p>
+                    <div className="absolute bottom-[8px] right-[5px] flex items-center gap-[5px]">
+                      <div
+                        className="flex items-center bg-white px-[10px] py-[1px] rounded-full cursor-pointer"
+                        onClick={() => handleLike(filteredPost.post_id)}
+                      >
+                        {likes.some(
+                          (like) =>
+                            like.postid === filteredPost.post_id &&
+                            like.likeuserid === currentUser.id
+                        ) ? (
+                          <FavoriteOutlinedIcon
+                            sx={{ fontSize: 17, color: "red" }}
+                            className=""
+                          />
+                        ) : (
+                          <FavoriteBorderOutlinedIcon sx={{ fontSize: 17 }} />
+                        )}
+                        <span className="ml-1 text-[15px]">
+                          {filteredPost.like_count}
+                        </span>
+                      </div>
+                      <p className="bg-white px-[10px] py-[1px] rounded-full text-[15px] text-gray-800 font-medium">
+                        {filteredPost.category}
+                      </p>
+                    </div>
                   </div>
-                  <p className="bg-white px-[10px] py-[1px] rounded-full text-[15px]">
-                    {post.category}
-                  </p>
+                </div>
+
+                <div className="px-[10px] py-[5px]">
+                  <Link to="/single/:id" state={{ filteredPost, likes }}>
+                    <h2 className="font-[500] text-[20px] hover:opacity-[80%] duration-200">
+                      {filteredPost.post_title}
+                    </h2>
+                  </Link>
+                  <div className="flex justify-between">
+                    <Link to="/profile/:id" state={{ filteredPost, likes }}>
+                      <div className="flex items-center gap-[5px] mt-[1px]">
+                        <img
+                          src={filteredPost.profileicon}
+                          alt=""
+                          className="w-[30px] h-[30px] rounded-full"
+                        />
+                        <p>{filteredPost.nickname}</p>
+                      </div>
+                    </Link>
+                    <p className="text-gray-700 text-[15px]">an hour ago</p>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="px-[20px] py-[5px]">
-              <Link to="/single/:id" state={{ post, likes }}>
-                <h2 className="font-[500] text-[20px] hover:opacity-[80%] duration-200">
-                  {post.post_title}
-                </h2>
-              </Link>
-              <Link to="/profile/:id" state={post}>
-                <div className="flex items-center gap-[5px] mt-[5px]">
-                  <img
-                    src={post.profileicon}
-                    alt=""
-                    className="w-[30px] h-[30px] rounded-full"
-                  />
-                  <p>{post.nickname}</p>
+            );
+          })}
+        </div>
+      ) : (
+        <div className="grid grid-cols-3 gap-x-[15px] gap-y-[30px]">
+          {posts.map((post) => {
+            return (
+              <div
+                key={post.post_id}
+                className="rounded-lg flex flex-col shadow-lg border-[1px] border-gray-300 pb-[5px]"
+              >
+                <div className="relative">
+                  <Link
+                    to="/single/:id"
+                    state={{ post, likes }}
+                    className="flex justify-center"
+                  >
+                    <img
+                      src={`/upload/${post.img}`}
+                      alt=""
+                      className="rounded-t-lg hover:opacity-[85%] duration-200 h-[300px] object-center object-cover w-full"
+                    />
+                  </Link>
+                  <div className="">
+                    <p className="absolute top-0 bg-white rounded-br-lg rounded-tl-lg px-[5px]">
+                      ${post.cost}
+                    </p>
+                    <div className="absolute bottom-[8px] right-[5px] flex items-center gap-[5px]">
+                      <div
+                        className="flex items-center bg-white px-[10px] py-[1px] rounded-full cursor-pointer"
+                        onClick={() => handleLike(post.post_id)}
+                      >
+                        {likes.some(
+                          (like) =>
+                            like.postid === post.post_id &&
+                            like.likeuserid === currentUser.id
+                        ) ? (
+                          <FavoriteOutlinedIcon
+                            sx={{ fontSize: 17, color: "red" }}
+                            className=""
+                          />
+                        ) : (
+                          <FavoriteBorderOutlinedIcon sx={{ fontSize: 17 }} />
+                        )}
+                        <span className="ml-1 text-[15px]">
+                          {post.like_count}
+                        </span>
+                      </div>
+                      <p className="bg-white px-[10px] py-[1px] rounded-full text-[15px] text-gray-800 font-medium">
+                        {post.category}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </Link>
-            </div>
-          </div>
-        );
-      })}
+
+                <div className="px-[10px] py-[5px]">
+                  <Link to="/single/:id" state={{ post, likes }}>
+                    <h2 className="font-[500] text-[20px] hover:opacity-[80%] duration-200">
+                      {post.post_title}
+                    </h2>
+                  </Link>
+                  <div className="flex justify-between">
+                    <Link to="/profile/:id" state={{ post, likes }}>
+                      <div className="flex items-center gap-[5px] mt-[1px]">
+                        <img
+                          src={post.profileicon}
+                          alt=""
+                          className="w-[30px] h-[30px] rounded-full"
+                        />
+                        <p>{post.nickname}</p>
+                      </div>
+                    </Link>
+                    <p className="text-gray-700 text-[15px]">an hour ago</p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

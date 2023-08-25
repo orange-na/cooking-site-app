@@ -7,7 +7,6 @@ import { AuthContext } from "../contexts/authContext";
 function Post() {
   const { state } = useLocation();
   const { currentUser } = useContext(AuthContext);
-  console.log(state.likes);
   const post = state.post;
   const likes = state.likes;
   return (
@@ -34,7 +33,7 @@ function Post() {
             </div>
           </div>
           <Link to="/single/:id" state={{ post, likes }}>
-            <p>{post.post_title}</p>
+            <p className="text-[40px]">{post.post_title}</p>
           </Link>
           <p>{post.post_desc}</p>
           <img

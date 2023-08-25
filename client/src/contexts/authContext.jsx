@@ -16,7 +16,6 @@ export const AuthContextProvider = ({ children }) => {
         { withCredentials: true }
       );
       setCurrentUser(res.data);
-      console.log(currentUser);
     } catch (error) {
       console.log(error);
     }

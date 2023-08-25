@@ -3,10 +3,9 @@ import Posts from "../components/posts";
 
 function Profile() {
   const { state } = useLocation();
-  console.log(state);
   return (
     <>
-      <div className="h-[calc(100vh-105px)] basis-2/3 bg-white mx-[20px] mt-[20px] rounded-md p-[20px] overflow-scroll">
+      <div className="h-[calc(100vh-105px)] basis-3/4 bg-white mx-[20px] mt-[20px] rounded-md p-[20px] overflow-scroll">
         <div className="border-b border-gray-300 pb-[20px] mb-[30px]">
           <div className="relative mb-[110px]">
             {state.profileimg ? (
