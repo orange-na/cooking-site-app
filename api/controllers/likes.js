@@ -28,30 +28,31 @@ const getUserLikes = (req, res) => {
   jwt.verify(token, "secretkey", (err, userInfor) => {
     if (err) return res.status(403).json("Token is not valid!!");
 
-    const q = `SELECT
-    p.id AS post_id,
-    p.title AS post_title,
-    p.desc AS post_desc,
-    p.cost,
-    p.category,
-    p.uid,
-    p.img,
-    p.date,
-    u.username,
-    u.nickname,
-    u.profileimg,
-    u.profileicon,
-    COUNT(l.id) AS like_count
-FROM
-    posts p
-JOIN
-    users u ON p.uid = u.id
-LEFT JOIN
-    likes l ON p.id = l.postid
-WHERE
-    l.likeuserid = ($1) -- 特定の likeuserid に一致する行を取得
-GROUP BY
-    p.id, p.title, p.desc, p.cost, p.category, p.uid, p.img, p.date, u.username, u.nickname, u.profileimg, u.profileicon;
+    const q = `
+        SELECT
+        p.id AS post_id,
+        p.title AS post_title,
+        p.desc AS post_desc,
+        p.cost,
+        p.category,
+        p.uid,
+        p.img,
+        p.date,
+        u.username,
+        u.nickname,
+        u.profileimg,
+        u.profileicon,
+        COUNT(l.id) AS like_count
+        FROM
+            posts p
+        JOIN
+            users u ON p.uid = u.id
+        LEFT JOIN
+            likes l ON p.id = l.postid
+        WHERE
+            l.likeuserid = ($1) -- 特定の likeuserid に一致する行を取得
+        GROUP BY
+            p.id, p.title, p.desc, p.cost, p.category, p.uid, p.img, p.date, u.username, u.nickname, u.profileimg, u.profileicon;
 `;
 
     pool.query(q, [userInfor], (err, results) => {

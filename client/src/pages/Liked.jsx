@@ -54,6 +54,7 @@ function Liked() {
     getPosts();
     getLikes();
   }, []);
+
   return (
     <main className="h-[calc(100vh-105px)] basis-3/4 p-[20px] mx-[20px] mt-[20px] bg-white rounded-md overflow-scroll shadow-xl">
       <div className="">
