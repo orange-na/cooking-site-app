@@ -1,85 +1,23 @@
 import { useNavigate } from "react-router-dom";
-import { PostsContext } from "../contexts/postsContext";
 import { ResultsContext } from "../contexts/resultsContext";
 import { Link } from "react-router-dom";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { AuthContext } from "../contexts/authContext";
-import SearchIcon from "@mui/icons-material/Search";
+import { PostsContext } from "../contexts/postsContext";
 
 function Results() {
-  // const [results, setResults] = useState([]);
-  // const { results, setResults } = useContext(ResultsContext);
-  // const navigate = useNavigate();
-  // const { posts } = useContext(PostsContext);
-
-  // const [search, setSearch] = useState("");
-
-  // const handleSearch = (e) => {
-  //   setSearch(e.target.value);
-  //   console.log(search);
-  // };
-
-  // const filteredPosts = posts.filter((post) =>
-  //   post.post_title.includes(results.data.title)
-  // );
-  // console.log(results.data.title);
-  // console.log(posts[0].title);
-
-  // console.log(filteredPosts);
-
-  // const handleCategory = (e) => {
-  //   setSearch(e.target.textContent);
-  // };
-
-  // console.log(posts);
-
-  // useEffect(() => {
-  //   setResults(JSON.parse(localStorage.getItem("results")));
-  // }, []);
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([]);
+  const { posts } = useContext(PostsContext);
   const [likes, setLikes] = useState([]);
   const { currentUser } = useContext(AuthContext);
   const { results, setResults } = useContext(ResultsContext);
 
-  const getPosts = async () => {
+  const handleLike = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/api/posts/get", {
-        withCredentials: true,
-      });
-      const newData = res.data;
-      setPosts(newData);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const getLikes = async () => {
-    try {
-      const res = await axios.get("http://localhost:8800/api/likes/get", {
-        withCredentials: true,
-      });
-      setLikes(res.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleLike = async (postId) => {
-    try {
-      const res = await axios.post(
-        "http://localhost:8800/api/likes/add",
-        {
-          postid: postId,
-        },
-        { withCredentials: true }
-      );
-      console.log(res.data);
-      getPosts();
-      getLikes();
+      // getPosts();
+      // getLikes();
     } catch (error) {
       console.log(error);
     }
@@ -95,15 +33,12 @@ function Results() {
     results?.data.map((result) => result?.title).includes(post?.post_title)
   );
 
-  useEffect(() => {
-    getPosts();
-    getLikes();
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <main className="h-[calc(100vh-105px)] basis-3/4 p-[20px] mx-[20px] mt-[20px] bg-white rounded-md overflow-scroll">
       <div className="grid grid-cols-3 gap-x-[15px] gap-y-[30px]">
-        {filteredPosts?.map((filteredPost) => {
+        {posts?.map((filteredPost) => {
           return (
             <div
               key={filteredPost.post_id}
@@ -116,7 +51,7 @@ function Results() {
                   className="flex justify-center"
                 >
                   <img
-                    src={`/upload/${filteredPost.img}`}
+                    src={filteredPost.img}
                     alt=""
                     className="rounded-t-lg hover:opacity-[85%] duration-200 h-[300px] object-center object-cover w-full"
                   />
