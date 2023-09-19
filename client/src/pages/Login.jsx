@@ -38,6 +38,7 @@ function Login() {
               onChange={handleChanged}
               placeholder="password"
             />
+            <p className="text-gray-500">Demo email: test / password: test</p>
             <button
               className="bg-green-500 py-2 px-4 rounded-md text-white mt-5 hover:bg-green-600 duration-200"
               onClick={handleLogin}
@@ -47,7 +48,7 @@ function Login() {
             <p>
               You do not have an account??
               <Link
-                to="/signup"
+                to="/"
                 className="text-red-400 hover:text-red-500 duration-200 ml-3"
               >
                 Sing up
