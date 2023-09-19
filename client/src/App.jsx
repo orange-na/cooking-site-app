@@ -20,6 +20,7 @@ import Liked from "./pages/Liked";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
+  console.log(currentUser);
 
   const ProtectedRouter = ({ children }) => {
     if (!currentUser) return <Navigate to="/login" />;

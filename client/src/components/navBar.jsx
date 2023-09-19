@@ -52,7 +52,7 @@ function Navbar() {
             Logout
           </button>
           <Link
-            to="/signup"
+            to="/"
             className="bg-green-500 py-[8px] px-[15px] text-white rounded-lg hover:bg-green-600 duration-200"
           >
             <span>Sign up</span>
