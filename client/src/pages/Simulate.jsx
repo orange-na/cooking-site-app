@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ResultsContext } from "../contexts/resultsContext";
 
@@ -16,39 +15,7 @@ function Simulate() {
     setInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSimulate = async () => {
-    let retries = 0;
-
-    while (retries < 10) {
-      try {
-        const res = await axios.post(
-          "http://localhost:8800/api/simulate/getorder",
-          inputs,
-          { withCredentials: true }
-        );
-
-        const data = res.data;
-        console.log(data);
-        console.log(inputs.limit);
-
-        // 条件を満たした場合はループを終了
-        if (data.total <= inputs.limit) {
-          setSimulation(data);
-          console.log(data);
-          break;
-        }
-
-        retries++;
-      } catch (error) {
-        console.log(error);
-        retries++;
-      }
-    }
-
-    if (retries === 10) {
-      console.log("Max retries reached. Unable to get data.");
-    }
-  };
+  const handleSimulate = () => {};
 
   const handleSave = () => {
     save({ simulation, inputs });

@@ -2,21 +2,17 @@ import { Link } from "react-router-dom";
 import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import { useContext, useEffect, useState } from "react";
-import axios from "axios";
 import { AuthContext } from "../contexts/authContext";
+import { PostsContext } from "../contexts/postsContext";
 
 function Liked() {
-  const [posts, setPosts] = useState([]);
+  const { posts } = useContext(PostsContext);
   const [likes, setLikes] = useState([]);
   const { currentUser } = useContext(AuthContext);
 
   const getPosts = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/api/likes/getuser", {
-        withCredentials: true,
-      });
-      const newData = res.data;
-      setPosts(newData);
+      // setPosts(newData);
     } catch (error) {
       console.log(error);
     }
@@ -24,10 +20,7 @@ function Liked() {
 
   const getLikes = async () => {
     try {
-      const res = await axios.get("http://localhost:8800/api/likes/get", {
-        withCredentials: true,
-      });
-      setLikes(res.data);
+      // setLikes(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -35,16 +28,6 @@ function Liked() {
 
   const handleLike = async (postId) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8800/api/likes/add",
-        {
-          postid: postId,
-        },
-        { withCredentials: true }
-      );
-      console.log(res.data);
-      getPosts();
-      getLikes();
     } catch (error) {
       console.log(error);
     }
@@ -72,7 +55,7 @@ function Liked() {
                     className="flex justify-center"
                   >
                     <img
-                      src={`/upload/${post.img}`}
+                      src={post.img}
                       alt=""
                       className="rounded-t-lg hover:opacity-[85%] duration-200 h-[300px] object-center object-cover w-full"
                     />
