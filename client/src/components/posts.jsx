@@ -46,7 +46,6 @@ function Posts() {
 
   const handleSearch = (e) => {
     setSearch(e.target.value);
-    console.log(search);
   };
 
   const filteredPosts = posts.filter(
