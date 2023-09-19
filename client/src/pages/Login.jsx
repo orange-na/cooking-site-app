@@ -15,7 +15,8 @@ function Login() {
   };
 
   const handleLogin = () => {
-    login(inputs).then(() => navigate("/"));
+    login(inputs);
+    navigate("/");
   };
   return (
     <>
