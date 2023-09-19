@@ -1,21 +1,24 @@
-import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(
-    JSON.parse(localStorage.getItem("user") || null)
-  );
+  const user = {
+    email: "test",
+    id: 1,
+    nickname: "test",
+    profileicon: "/img/profileImg.jpg",
+    profileimg: "/img/proPic.jpg",
+    username: "test",
+  };
 
-  const login = async (inputs) => {
+  const [currentUser, setCurrentUser] = useState({});
+
+  const login = (input) => {
     try {
-      const res = await axios.post(
-        "http://localhost:8800/api/auth/login",
-        inputs,
-        { withCredentials: true }
-      );
-      setCurrentUser(res.data);
+      if (input.email === "test" && input.password == "test") {
+        setCurrentUser(user);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -23,11 +26,7 @@ export const AuthContextProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const res = await axios.delete("http://localhost:8800/api/auth/logout", {
-        withCredentials: true,
-      });
       setCurrentUser(null);
-      console.log(res.data);
     } catch (error) {
       console.log(error);
     }
