@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -20,29 +19,15 @@ function Publish() {
 
   const upload = async () => {
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-      const res = await axios.post(
-        "http://localhost:8800/api/upload",
-        formData,
-        { withCredentials: true }
-      );
-      console.log(res.data);
-      return res.data;
+      navigate("/");
     } catch (err) {
       console.log(err);
     }
   };
 
   const handlePost = async () => {
-    const imgUrl = await upload();
+    // const imgUrl = await upload();
     try {
-      const res = await axios.post(
-        "http://localhost:8800/api/posts/add",
-        { ...inputs, cat: cat, desc: desc, img: imgUrl },
-        { withCredentials: true }
-      );
-      console.log(res.data);
       navigate("/");
     } catch (error) {
       console.log(error);
