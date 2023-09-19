@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -17,12 +16,6 @@ function Signup() {
 
   const handleSignup = async () => {
     try {
-      const res = await axios.post(
-        "http://localhost:8800/api/auth/signup",
-        inputs,
-        { withCredentials: true }
-      );
-      console.log(res.data);
       navigate("/login");
     } catch (error) {
       console.log(error);
