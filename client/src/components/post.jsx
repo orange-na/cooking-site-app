@@ -1,13 +1,8 @@
 import { Link, useLocation } from "react-router-dom";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
-import { useContext } from "react";
-import { AuthContext } from "../contexts/authContext";
 
 function Post() {
   const { state } = useLocation();
-  const { currentUser } = useContext(AuthContext);
-  const post = state.post;
+  const post = state.post || state.filteredPost;
   const likes = state.likes;
   return (
     <div className="">
@@ -37,21 +32,12 @@ function Post() {
           </Link>
           <p>{post.post_desc}</p>
           <img
-            src={`/upload/${post.img}`}
+            src={post.img}
             alt=""
             className="object-cover w-full max-h-[450px] rounded-md"
           />
           <div className="ml-[10px]">
             <div className="flex items-center">
-              {/* {likes.some(
-                (like) =>
-                  like.postid === post.post_id &&
-                  like.likeuserid === currentUser.id
-              ) ? (
-                <FavoriteOutlinedIcon />
-              ) : (
-                <FavoriteBorderOutlinedIcon />
-              )} */}
               <span className="ml-1">{post.like_count} likes</span>
             </div>
           </div>
