@@ -9,8 +9,6 @@ function Navbar() {
   const { posts } = useContext(PostsContext);
   const navigate = useNavigate();
 
-  console.log(posts);
-
   const handleLogout = () => {
     logout();
     navigate("/login");
